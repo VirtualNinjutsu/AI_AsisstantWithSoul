@@ -1,8 +1,6 @@
 from llama_cpp import Llama
 
-#model_dir = "G:/models/chatwaifu_12b_v2.0-q4_k_m.gguf"  #плюс минус интересная модель
-#model_dir = "G:/models/Peach-9B-8k-Roleplay.Q5_K_S.gguf"
-model_dir = "G:/models/Janus-Pro-7B-LM.Q4_K_M.gguf"     #слегка глуповатая модель, но быстрая, для тестов
+model_dir = "/model/path"  
 '''
 RU: Настройка gguf модели, можете поиграться с параметрами сами, дам комментарий к каждому параметру
 EN: Configuration of the GGUF model; feel free to experiment with the parameters, comments provided for each parameter.
