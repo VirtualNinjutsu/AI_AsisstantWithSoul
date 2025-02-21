@@ -4,7 +4,7 @@
 
 ## Как использовать:
 1) Установить gguf модель, например, с Hugging Face (https://huggingface.co/models?library=gguf&sort=trending).
-2) В файле chaters.py в переменной model_dir указать путь к скачанной модели.
+2) В файле chatter.py в переменной model_dir указать путь к скачанной модели.
 3) Установите зависимости: `pip install -r requirements.txt`.
 
 ## Использование с GPU
