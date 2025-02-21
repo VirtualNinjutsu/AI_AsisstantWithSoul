@@ -1,0 +1,5 @@
+deep-translator==1.11.4
+huggingface-hub==0.28.1
+llama_cpp_python==0.3.7
+sentence_transformers
+sklearn
