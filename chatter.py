@@ -1,16 +1,19 @@
 from llama_cpp import Llama
+from decouple import config
 
-model_dir = "/model/path"  
+model_dir = config('GGUF_MODEL_PATH')
+
 '''
 RU: Настройка gguf модели, можете поиграться с параметрами сами, дам комментарий к каждому параметру
 EN: Configuration of the GGUF model; feel free to experiment with the parameters, comments provided for each parameter.
 '''
 llm = Llama(
     model_path=model_dir,
-    n_gpu_layers= 0, # количество слоев обрабатываемых gpu (по умолчанию 0 - все слои идут на CPU, -1 - все слои на GPU) | Number of layers processed by GPU (default 0 — all layers on CPU, -1 — all layers on GPU).
+    n_gpu_layers= 20, # количество слоев обрабатываемых gpu (по умолчанию 0 - все слои идут на CPU, -1 - все слои на GPU) | Number of layers processed by GPU (default 0 — all layers on CPU, -1 — all layers on GPU).
     n_ctx= 2048, # размер контекста | Context size.
     verbose=True # при значении True модель будет выводить информацию о своей работе | When set to True, the model will output information about its operation.
 )
+
 
 
 history = []
@@ -32,7 +35,7 @@ def chat(user_message_tr):
     EN: The following is the base prompt for the assistant; you can modify the text after 'content' if desired.
     '''
     messages=[
-        {"role": "system", "content": "You are a virtual assistant named Luna. Your character is friendly and humorous, but when a user has a serious problem, you become more professional. You always try to praise and cheer up the user using jokes and compliments. Your goal is to help with tasks, but do it with humor and ease. Remember, you are not responsible for the user and you are not talking to yourself."}]
+        {"role": "system", "content": "You are a male assistant on the user's computer. Your character is friendly and has a sense of humor, but when a user has a serious problem, you become more professional. You always try to praise and cheer up the user using jokes and compliments.Your goal is to help with tasks, but do it with humor and ease. Remember that you are not responsible for the user and you are not talking to yourself."}]
     messages.extend(history)
     resp = llm.create_chat_completion(
         messages=messages,
@@ -46,3 +49,21 @@ def chat(user_message_tr):
     history.append(ai_a_for_history)
     print(history)
     return ai_a
+
+
+def weather_chat(answer):
+    '''
+    RU: Функция для обработки ответа о погоде.
+    EN: Function for processing the weather response.
+    '''
+    messages=[
+        {"role": "system", "content": "You will be sent a poorly written description of the weather outside, your task is to beautifully retell this description."},
+        {"role": "user", "content": answer}]
+    resp = llm.create_chat_completion(
+        messages=messages,
+        temperature=1, 
+        top_p=1, 
+        max_tokens=240, 
+    )
+    convert_answer = str((resp["choices"][0]["message"]["content"]))
+    return convert_answer

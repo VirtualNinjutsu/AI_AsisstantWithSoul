@@ -1,6 +1,8 @@
 from deep_translator import GoogleTranslator
 import chatter
 from intent_classification import IntentClassifier
+from scripts import Countdown, Weather, STT, Voice
+from decouple import config
 
 classifier = IntentClassifier()
 def greeting():
@@ -9,7 +11,8 @@ def greeting():
     EN: Greeting function and user message retrieval.
     """
     print('AI Assistant готов к работе')
-    user_message = str(input('Обратитесь к ассистенту: '))
+    # user_message = str(input('Обратитесь к ассистенту: '))
+    user_message = str(STT())
     check_message(user_message)
 
 
@@ -20,9 +23,13 @@ def check_message(user_message):
    """
    intent = classifier.predict(user_message)
    if intent == 'set_timer':
-        print('Установить таймер') #пока что так, чтобы проверить работоспособность, когда допишу модули, перепишу эту часть кода
-   elif intent == 'weather':
-       print('Погода')
+        test = int(input('введите время: '))
+        timer = Countdown(test)
+   elif intent == 'weather':  
+       answer = str(Weather())
+       ai_answer = chatter.weather_chat(answer) 
+       ai_answer_tr = tr_en_ru(ai_answer)
+       print(ai_answer_tr)
    elif intent == 'note':
        print('Заметка')
    elif intent == 'tell_joke':
@@ -36,7 +43,7 @@ def check_message(user_message):
    else:
        print('ты че несешь?')
 
-def tr_user_input_ru_en(user_message):
+def tr_ru_en(user_message):
    """
    RU:Функция перевода сообщения пользователя с русского на английский.
    EN: Function for translating user messages from Russian to English.
@@ -44,7 +51,7 @@ def tr_user_input_ru_en(user_message):
    user_message_tr = GoogleTranslator(source='auto', target='en').translate(user_message)
    return user_message_tr
 
-def tr_user_input_en_ru(ai_a):
+def tr_en_ru(ai_a):
    """
    RU: Функция перевода ответа бота с английского на русский.
    EN: Function for translating bot responses from English to Russian.
@@ -58,7 +65,7 @@ def chat_assistant(user_message):
    EN: Function for interacting with the bot.
    """
    while True:
-       user_message_tr = tr_user_input_ru_en(user_message)
+       user_message_tr = tr_ru_en(user_message)
        try:
            ai_a = chatter.chat(user_message_tr)
        except Exception as e:
@@ -68,11 +75,12 @@ def chat_assistant(user_message):
            print("Упс!\nПамять переполнена")
            break
 
-       ai_a_tr = tr_user_input_en_ru(ai_a)
+       ai_a_tr = tr_en_ru(ai_a)
        print(ai_a_tr)
+       voice = Voice()
+       voice.generate(ai_a_tr)
        user_message = str(input('User: '))
 
 
 if __name__ == '__main__':
     greeting()
-    

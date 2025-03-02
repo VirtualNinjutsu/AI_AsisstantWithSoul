@@ -2,6 +2,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.linear_model import LogisticRegression
 import pickle
 import os
+from decouple import config
 
 """
 RU: Датасеты для предсказания намерений

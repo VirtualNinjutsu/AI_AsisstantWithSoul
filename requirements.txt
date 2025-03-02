@@ -1,5 +1,11 @@
-deep-translator==1.11.4
-huggingface-hub==0.28.1
-llama_cpp_python==0.3.7
-sentence_transformers
-sklearn
+deep-translator
+llama-cpp-python
+sentence-transformers
+scikit-learn
+requests
+speechrecognition
+transformers
+torch
+scipy
+python-decouple
+pyaudio
